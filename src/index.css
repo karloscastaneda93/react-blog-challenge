@@ -1,4 +1,5 @@
 @import 'bulma/css/bulma.min.css';
+@import 'react-loading-skeleton/dist/skeleton.css';
 
 body {
 	margin: 0;
@@ -7,6 +8,10 @@ body {
 		sans-serif;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+}
+
+.ReactModal__Body--open {
+	overflow: hidden;
 }
 
 code {

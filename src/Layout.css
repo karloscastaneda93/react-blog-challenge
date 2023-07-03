@@ -6,12 +6,14 @@ section.section .container:not(.btn) {
     background-color: #fff;
     padding: 3rem;
     border-radius: 8px;
-    min-height: 100vh;
 }
 
-p.title.is-4 {
-    font-size: 22px;
+p.title.is-4, .card p.content {
     line-height: 1.5em;
     height: 3em;
     overflow: hidden;
-  }
+}
+
+.header-details {
+    z-index: 1;
+}
