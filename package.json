@@ -30,7 +30,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test", 
+    "test": "react-scripts test",
     "test-prod": "react-scripts test --coverage --watchAll=false --json --outputFile=tests/results.json",
     "eject": "react-scripts eject",
     "lint": "eslint .",
@@ -47,5 +47,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "eslint-plugin-prettier": "^4.2.1"
   }
 }
