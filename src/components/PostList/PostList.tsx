@@ -16,7 +16,7 @@ const PostList: React.FC<{ posts: Post[] }> = ({ posts }) => {
 	}, [selectedTag, posts]);
 
 	return (
-		<div className="columns is-multiline">
+		<ul className="columns is-multiline">
 			{filteredPosts.map((post) => (
 				<PostItem
 					key={post.id}
@@ -25,7 +25,7 @@ const PostList: React.FC<{ posts: Post[] }> = ({ posts }) => {
 					selectedTag={selectedTag}
 				/>
 			))}
-		</div>
+		</ul>
 	);
 };
 

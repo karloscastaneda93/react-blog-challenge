@@ -1,22 +1,15 @@
 import React, { useState, FC, useEffect } from "react";
-import { useLocation } from "react-router-dom";
 import "./ScrollTop.css";
 
 const ScrollToTop: FC<{ inView: boolean }> = ({ inView }) => {
 	const [show, setShow] = useState(false);
 	const [isRendered, setIsRendered] = useState(false);
 
-	const { pathname } = useLocation();
-
 	const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
 	useEffect(() => {
 		setShow(!inView);
 	}, [inView]);
-
-	useEffect(() => {
-		scrollToTop();
-	}, [pathname]);
 
 	useEffect(() => {
 		const timer = setTimeout(() => {

@@ -16,7 +16,7 @@ const Header: FC<{ setInView: (inView: boolean) => void }> = ({
 		<header ref={ref} className="header">
 			<div className="header-details has-text-centered mt-5">
 				<Title />
-				<h2 className="author">
+				<p className="author">
 					by
 					<a
 						target="_blank"
@@ -26,7 +26,7 @@ const Header: FC<{ setInView: (inView: boolean) => void }> = ({
 					>
 						Carlos Castañeda
 					</a>
-				</h2>
+				</p>
 			</div>
 		</header>
 	);

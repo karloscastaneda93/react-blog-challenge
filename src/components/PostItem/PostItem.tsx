@@ -15,10 +15,10 @@ const PostItem: React.FC<PostItemProps> = ({
 	handleTagClick,
 	selectedTag,
 }) => (
-	<div key={post.id} className="column is-half">
-		<div className="card">
+	<li key={post.id} className="column is-half">
+		<article className="card">
 			<div className="card-content">
-				<p className="title is-4">{post.title}</p>
+				<h2 className="title is-4">{post.title}</h2>
 				<div className="tags">
 					{post.tags.map((tag: string) => (
 						<Tag
@@ -40,15 +40,16 @@ const PostItem: React.FC<PostItemProps> = ({
 					<div className="card-footer">
 						<Link
 							className="button is-outlined is-small is-fullwidth"
+							title="Read More About this post"
 							to={`/post/${post.id}`}
 						>
-							Read More
+							Read More...
 						</Link>
 					</div>
 				</div>
 			</div>
-		</div>
-	</div>
+		</article>
+	</li>
 );
 
 export default PostItem;
