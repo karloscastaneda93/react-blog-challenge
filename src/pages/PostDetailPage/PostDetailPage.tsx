@@ -1,29 +1,39 @@
-import React, { useState, useMemo, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import Skeleton from "react-loading-skeleton";
 
 import { Comment as CommentType } from "../../types/Comment";
-import {
-	addComment,
-	usePostById,
-	useUserById,
-	useCommentsByPostId,
-} from "../../services/api";
+import { addComment, useCommentsByPostId } from "../../services/api";
 import { storeInLocalStorage, getFromLocalStorage } from "../../utils";
 import Error from "../../components/Error";
 import AddComment from "../../components/AddComment";
 import Comment from "../../components/Comment";
 import Pagination from "../../components/Pagination";
 
+// import { usePostDetail } from "../../hooks/usePostDetail"
+import { usePostDetail } from "../../hooks/usePostDetail";
+// import { useComments } from "../../hooks/useComments";
+// import { useAddComment } from "../../hooks/useAddComment";
+
 import "./PostDetailPage.css";
 import { Link } from "react-router-dom";
 
+const PAGE_SIZE = 3;
 const COMMENT_STATUS_MESSAGE_DELAY = 1500;
 
 const PostDetailPage: React.FC = () => {
 	const { id } = useParams<{ id: string }>();
 	const navigate = useNavigate();
+
+	const {
+		postData,
+		postLoading,
+		postError,
+		userData,
+		userLoading,
+		userError,
+	} = usePostDetail(id || "");
 
 	// Add a state to handle current comment page
 	const [currentCommentsPage, setCurrentPage] = useState(1);
@@ -31,26 +41,11 @@ const PostDetailPage: React.FC = () => {
 	const [displayedComments, setDisplayedComments] = useState<CommentType[]>(
 		[],
 	);
-	const pageSize = 3; // items to be loaded at a time
-
-	const {
-		data: postData,
-		isLoading: postLoading,
-		error: postError,
-	} = usePostById(id || "");
-
-	const userId = useMemo(() => postData?.userId.toString(), [postData]);
-
-	const {
-		data: userData,
-		isLoading: userLoading,
-		error: userError,
-	} = useUserById(userId || "");
 
 	const { data: commentsData, isLoading: commentsLoading } =
-		useCommentsByPostId(id || "", currentCommentsPage, pageSize);
+		useCommentsByPostId(id || "", currentCommentsPage, PAGE_SIZE);
 
-	// New state for comments
+	// // New state for comments
 	const [, setComments] = useState<CommentType[]>([]);
 
 	// Initialize comments
@@ -67,14 +62,14 @@ const PostDetailPage: React.FC = () => {
 				? [...storedComments, ...commentsData.comments]
 				: [...commentsData.comments];
 
-			const startIdx = (currentCommentsPage - 1) * pageSize;
-			const endIdx = startIdx + pageSize;
+			const startIdx = (currentCommentsPage - 1) * PAGE_SIZE;
+			const endIdx = startIdx + PAGE_SIZE;
 
 			setComments(allComments);
 			setDisplayedComments(allComments.slice(startIdx, endIdx));
-			setTotalPages(Math.ceil(allComments.length / pageSize));
+			setTotalPages(Math.ceil(allComments.length / PAGE_SIZE));
 		}
-	}, [commentsData, id, currentCommentsPage, pageSize]);
+	}, [commentsData, id, currentCommentsPage, PAGE_SIZE]);
 
 	const [commentStatusMessage, setCommentStatusMessage] = useState<{
 		message: string;
@@ -116,7 +111,7 @@ const PostDetailPage: React.FC = () => {
 							);
 							// Calculate the new total pages
 							const newTotalPages = Math.ceil(
-								updatedComments.length / pageSize,
+								updatedComments.length / PAGE_SIZE,
 							);
 							setTotalPages(newTotalPages);
 							return updatedComments;
@@ -126,7 +121,7 @@ const PostDetailPage: React.FC = () => {
 								newAddedComment,
 								...prevDisplayedComments,
 							];
-							return updatedDisplayedComments.slice(0, pageSize);
+							return updatedDisplayedComments.slice(0, PAGE_SIZE);
 						});
 					}
 				} catch (error) {
@@ -253,7 +248,7 @@ const PostDetailPage: React.FC = () => {
 										<Pagination
 											currentPage={currentCommentsPage}
 											totalPages={totalPages}
-											pageSize={pageSize}
+											pageSize={PAGE_SIZE}
 											isHomePage={false}
 											onPageChange={handlePageChange}
 										/>
