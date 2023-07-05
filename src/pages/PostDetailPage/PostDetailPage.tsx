@@ -11,10 +11,7 @@ import AddComment from "../../components/AddComment";
 import Comment from "../../components/Comment";
 import Pagination from "../../components/Pagination";
 
-// import { usePostDetail } from "../../hooks/usePostDetail"
 import { usePostDetail } from "../../hooks/usePostDetail";
-// import { useComments } from "../../hooks/useComments";
-// import { useAddComment } from "../../hooks/useAddComment";
 
 import "./PostDetailPage.css";
 import { Link } from "react-router-dom";
