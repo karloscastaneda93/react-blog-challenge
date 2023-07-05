@@ -1,5 +1,5 @@
 // Utility function to store data in localStorage
-export const storeInLocalStorage = (key: string, data: any) => {
+export const storeInLocalStorage = <T>(key: string, data: T): void => {
 	try {
 		localStorage.setItem(key, JSON.stringify(data));
 	} catch (error) {

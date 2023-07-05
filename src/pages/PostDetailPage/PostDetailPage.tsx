@@ -51,7 +51,7 @@ const PostDetailPage: React.FC = () => {
 		useCommentsByPostId(id || "", currentCommentsPage, pageSize);
 
 	// New state for comments
-	const [comments, setComments] = useState<CommentType[]>([]);
+	const [, setComments] = useState<CommentType[]>([]);
 
 	// Initialize comments
 	useEffect(() => {
