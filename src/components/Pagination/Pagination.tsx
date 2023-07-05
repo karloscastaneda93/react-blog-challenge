@@ -16,6 +16,9 @@ interface PaginationProps {
 	onPageChange?: (page: number) => void;
 }
 
+const getButtonClass = (isDisabled: boolean) =>
+	isDisabled ? " is-disabled is-unselectable" : " is-clickable";
+
 const Pagination: React.FC<PaginationProps> = ({
 	totalPages,
 	siblingCount = 1,
@@ -70,22 +73,28 @@ const Pagination: React.FC<PaginationProps> = ({
 			aria-label="pagination"
 		>
 			<Link
-				className={`pagination-previous${getButtonClass(isFirstPage)}`}
+				className={`pagination-link pagination-previous ${getButtonClass(
+					isFirstPage,
+				)}`}
 				to={getPageLink(currentPage - 1)}
 				onClick={() => handlePageChange(currentPage - 1)}
+				style={{ pointerEvents: isFirstPage ? "none" : "auto" }}
 				aria-label="previous page"
+				aria-disabled={isFirstPage}
 			>
 				Previous
 			</Link>
 			<Link
-				className={`pagination-next${getButtonClass(isLastPage)}`}
+				className={`pagination-next ${getButtonClass(isLastPage)}`}
 				to={getPageLink(currentPage + 1)}
+				style={{ pointerEvents: isLastPage ? "none" : "auto" }}
 				onClick={() => handlePageChange(currentPage + 1)}
+				aria-disabled={isLastPage}
 				aria-label="next page"
 			>
 				Next
 			</Link>
-			<ul className={`pagination-list is-flex-wrap-nowrap ${className}`}>
+			<ol className={`pagination-list is-flex-wrap-nowrap ${className}`}>
 				{paginationRange.map((pageNumber, idx) =>
 					pageNumber === DOTS || typeof pageNumber === "string" ? (
 						<li key={idx}>
@@ -115,12 +124,9 @@ const Pagination: React.FC<PaginationProps> = ({
 						</li>
 					),
 				)}
-			</ul>
+			</ol>
 		</nav>
 	);
 };
-
-const getButtonClass = (isDisabled: boolean) =>
-	isDisabled ? " is-disabled is-unselectable" : " is-clickable";
 
 export default Pagination;

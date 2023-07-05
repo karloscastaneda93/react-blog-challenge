@@ -30,3 +30,12 @@ code {
 	white-space: nowrap;
 	border: 0;
 }
+
+.pagination-link.is-disabled,
+.pagination-link[disabled],
+.pagination-next.is-disabled,
+.pagination-next[disabled],
+.pagination-previous.is-disabled,
+.pagination-previous[disabled] {
+	color: #424242;
+}
