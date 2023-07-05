@@ -8,7 +8,7 @@ section.section .container:not(.btn) {
     border-radius: 8px;
 }
 
-p.title.is-4, .card p.content {
+.title.is-4, .card p.content {
     line-height: 1.5em;
     height: 3em;
     overflow: hidden;

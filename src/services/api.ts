@@ -1,15 +1,20 @@
 import axios from "axios";
 import { useQuery } from "react-query";
+
 import { Post, PostListTypes, User, CommentListTypes } from "../types";
 
 const API_BASE_URL = "https://dummyjson.com";
 
 const staleTime = 1000 * 60; // 1 minute
 
-export function useCommentsByPostId(id: string) {
+export function useCommentsByPostId(
+	id: string,
+	page: number,
+	pageSize: number,
+) {
 	return useQuery<CommentListTypes>(
-		["comment", id],
-		() => fetchCommentById(id),
+		["comment", id, page],
+		() => fetchCommentById(id, page, pageSize),
 		{ staleTime },
 	);
 }
@@ -59,8 +64,11 @@ async function fetchUserById(id: string): Promise<User> {
 	return response.data;
 }
 
-export async function fetchCommentById(id: string) {
-	const response = await axios.get(`${API_BASE_URL}/comments/post/${id}`);
+async function fetchCommentById(id: string, page: number, pageSize: number) {
+	const skip = page > 1 ? (page - 1) * pageSize : 0;
+	const response = await axios.get(
+		`${API_BASE_URL}/comments/post/${id}?limit=${pageSize}&skip=${skip}`,
+	);
 	return response.data;
 }
 

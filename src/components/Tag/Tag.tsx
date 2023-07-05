@@ -6,15 +6,17 @@ interface TagProps {
 	isSelected: boolean;
 }
 
-const Tag: React.FC<TagProps> = ({ tag, onClick, isSelected }) => (
-	<span
-		className={`tag is-clickable ${
-			isSelected ? "" : "has-background-grey-lighter"
-		}`}
-		onClick={() => onClick(tag)}
-	>
-		{tag}
-	</span>
-);
+const Tag: React.FC<TagProps> = ({ tag, onClick, isSelected }) => {
+	return (
+		<span
+			className={`tag is-clickable ${
+				isSelected ? "" : "has-background-grey-lighter"
+			}`}
+			onClick={() => onClick(tag)}
+		>
+			{tag}
+		</span>
+	);
+};
 
 export default Tag;

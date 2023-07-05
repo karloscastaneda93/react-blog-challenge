@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import "./SearchBar.css";
 
 interface SearchBarProps {
@@ -6,8 +7,11 @@ interface SearchBarProps {
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
+	const [searchParams] = useSearchParams();
 	const targetRef = useRef<HTMLInputElement | null>(null);
-	const [searchValue, setSearchValue] = useState<string>("");
+	const [searchValue, setSearchValue] = useState<string>(
+		searchParams.get("q") || "",
+	);
 	const [debouncedValue, setDebouncedValue] = useState(searchValue);
 
 	useEffect(() => {
