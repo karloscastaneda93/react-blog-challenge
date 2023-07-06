@@ -1,8 +1,35 @@
 .header {
-    background: linear-gradient(to right bottom, #222831, #680017);
-    height: 25vh;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    color: #fff;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-color: #e2e2e2;
+    margin: 0;
+    padding-top: 3em;
+    overflow: hidden;
+    width: 100%;
+}
+
+header.header::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    transform: skewY(-5deg);
+    background: linear-gradient(to right bottom, #222831, #680017);
+    transform-origin: bottom left;
+}
+
+header.header a {
+    color: white;
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+header.header a:hover {
+    color: white;
+    text-decoration: underline;
 }
