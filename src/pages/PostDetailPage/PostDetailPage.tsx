@@ -230,7 +230,7 @@ const PostDetailPage: React.FC = () => {
 						</svg>
 					</Link>
 				</div>
-				<div className="container">
+				<article className="container">
 					{userError || postError ? (
 						<>
 							{userError && <Error error={userError} />}
@@ -238,7 +238,7 @@ const PostDetailPage: React.FC = () => {
 						</>
 					) : (
 						<>
-							<h1 className="title">
+							<h1 className="title post-title">
 								{!postLoading ? (
 									postData?.title
 								) : (
@@ -285,7 +285,7 @@ const PostDetailPage: React.FC = () => {
 							)}
 						</>
 					)}
-				</div>
+				</article>
 			</section>
 		</>
 	);
