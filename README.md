@@ -1,10 +1,19 @@
-# Getting Started with Create React App
+## [Live Demo](https://react-blog-challenge-e859f.web.app/)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Installation and Running
+To install and run the project, please follow these steps:
 
-## Available Scripts
+Make sure you have Node.js and Yarn installed on your machine.
 
-In the project directory, you can run:
+Clone the Git repository to your local machine.
+
+Navigate to the project directory using the command line or terminal.
+
+Run the following command to install the project dependencies
+
+### `yarn install`
+
+Once the installation is complete, you can use the following scripts to run the application:
 
 ### `yarn start`
 
