@@ -8,15 +8,15 @@ interface TagProps {
 
 const Tag: React.FC<TagProps> = ({ tag, onClick, isSelected }) => {
 	return (
-		<span
-			className={`tag is-clickable ${
+		<button
+			className={`tag button is-clickable ${
 				isSelected ? "" : "has-background-grey-lighter"
 			}`}
 			role="button"
 			onClick={() => onClick(tag)}
 		>
 			{tag}
-		</span>
+		</button>
 	);
 };
 
