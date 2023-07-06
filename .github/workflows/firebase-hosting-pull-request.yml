@@ -22,7 +22,5 @@ jobs:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_REACT_BLOG_CHALLENGE_E859F }}'
           projectId: react-blog-challenge-e859f
-
       - name: Run E2E tests
-        run: |
-          DEPLOY_URL=${{ steps.hosting-deploy.outputs.details_url }} yarn test:e2e
+        run: yarn test:e2e
