@@ -23,6 +23,7 @@ const Header: FC<{ setInView: (inView: boolean) => void }> = ({
 						rel="noreferrer"
 						className="is-size-4"
 						href="https://ccastaneda.dev"
+						aria-label="Carlos Castañeda - Developer Portfolio (opens in a new tab)"
 					>
 						Carlos Castañeda
 					</a>

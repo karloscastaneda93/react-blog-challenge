@@ -3,7 +3,6 @@ import { Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import HomePage from "./pages/HomePage";
 import PostDetailPage from "./pages/PostDetailPage";
-import NotFoundPage from "./pages/NotFoundPage";
 import ScrollToTop from "./components/ScrollTop";
 
 import "./Layout.css";
@@ -18,7 +17,6 @@ const Layout: React.FC = () => {
 					<Route path="/post/:id" element={<PostDetailPage />} />
 					<Route index element={<HomePage />} />
 					<Route path="/:page" element={<HomePage />} />
-					<Route path="*" element={<NotFoundPage />} />
 				</Routes>
 			</main>
 			<ScrollToTop inView={inView} />

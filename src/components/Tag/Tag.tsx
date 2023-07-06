@@ -12,6 +12,7 @@ const Tag: React.FC<TagProps> = ({ tag, onClick, isSelected }) => {
 			className={`tag is-clickable ${
 				isSelected ? "" : "has-background-grey-lighter"
 			}`}
+			role="button"
 			onClick={() => onClick(tag)}
 		>
 			{tag}
