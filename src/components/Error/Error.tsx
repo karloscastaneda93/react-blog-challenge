@@ -5,8 +5,6 @@ interface ErrorProps {
 }
 
 const Error: React.FC<ErrorProps> = ({ error }) => {
-	console.log(error);
-
 	if (!error) {
 		return null;
 	}

@@ -8,9 +8,8 @@ import PostItem from "../PostItem/PostItem";
 import "./PostList.css";
 
 const PostList: React.FC<{ posts: Post[] }> = ({ posts }) => {
-	const [searchParams] = useSearchParams();
-
 	const homeContext = useContext(HomeContext);
+	const [searchParams] = useSearchParams();
 	const [selectedTag, setSelectedTag] = useState(
 		homeContext?.filter || searchParams.get("filter") || "",
 	);

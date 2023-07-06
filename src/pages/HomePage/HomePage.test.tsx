@@ -25,8 +25,8 @@ const posts: PostListTypes = {
 	posts: [
 		{
 			id: 1,
-			title: "Post 1",
-			body: "Post 1 body",
+			title: "my mocked post",
+			body: "my mocked post is nice",
 			tags: ["love", "english"],
 			reactions: 6,
 			userId: 3,
@@ -37,8 +37,17 @@ const posts: PostListTypes = {
 	limit: 0,
 };
 
+const extraPosts = Array.from({ length: 20 }, (_, index) => ({
+	id: index + 1,
+	title: `Post ${index + 1}`,
+	body: `Post Body ${index + 1}`,
+	tags: ["love", "english"],
+	reactions: 6,
+	userId: 3,
+}));
+
 describe("HomePage", () => {
-    afterEach(() => {
+	afterEach(() => {
 		jest.resetAllMocks();
 	});
 
@@ -47,7 +56,41 @@ describe("HomePage", () => {
 		(usePosts as jest.Mock).mockClear();
 	});
 
-	it("renders posts", async () => {
+	it("should render loading skeleton", () => {
+		// Mock the API call to return loading state
+		(usePosts as jest.Mock).mockReturnValue({
+			data: posts,
+			isLoading: true,
+			error: null,
+		});
+
+		render(<MockHomePage />);
+
+		expect(
+			screen.getByTestId("react-loading-skeleton"),
+		).toBeInTheDocument();
+	});
+
+	it("should render home page with and pagination", async () => {
+		(usePosts as jest.Mock).mockReturnValue({
+			data: {
+				...posts,
+				posts: [...posts.posts, ...extraPosts],
+			},
+			isLoading: false,
+			error: null,
+		});
+		render(<MockHomePage />);
+
+		// expect(screen.getByText("my mocked post")).toBeInTheDocument();
+		// expect(screen.getByText("Post body 1")).toBeInTheDocument();
+		const post1 = await waitFor(() => screen.getByText("my mocked post"));
+		expect(post1).toBeInTheDocument();
+		// expect(screen.getByText("1")).toBeInTheDocument();
+		// expect(screen.getByText("2")).toBeInTheDocument();
+	});
+
+	it("renders home page with posts grid", async () => {
 		(usePosts as jest.Mock).mockReturnValue({
 			data: posts,
 			isLoading: false,
@@ -62,9 +105,36 @@ describe("HomePage", () => {
 		}
 	});
 
-	it("search posts", async () => {
+	it("should render no results found message", () => {
+		// Mock the API call to return no posts data
 		(usePosts as jest.Mock).mockReturnValue({
-			data: posts,
+			data: { posts: [], total: 0, skip: 0, limit: 0 },
+			isLoading: false,
+			error: null,
+		});
+
+		render(<MockHomePage />);
+
+		expect(screen.getByText("no results found for:")).toBeInTheDocument();
+	});
+
+	it("search for a post using searchbar", async () => {
+		(usePosts as jest.Mock).mockReturnValue({
+			data: {
+				posts: [
+					{
+						id: 1,
+						title: "my searching post",
+						body: "my searching post is nice",
+						tags: ["love", "english"],
+						reactions: 6,
+						userId: 3,
+					},
+				],
+				total: 0,
+				skip: 0,
+				limit: 0,
+			},
 			isLoading: false,
 			error: null,
 		});
@@ -73,10 +143,10 @@ describe("HomePage", () => {
 
 		// Type into the search bar
 		fireEvent.change(screen.getByPlaceholderText("Search posts..."), {
-			target: { value: "Post 1" },
+			target: { value: "searching" },
 		});
 
 		// Make sure only the relevant post is displayed
-		await waitFor(() => screen.getByText("Post 1"));
+		await waitFor(() => screen.getByText("my searching post"));
 	});
 });

@@ -15,9 +15,6 @@ import { useCommentsByPostId, addComment } from "../../services/api";
 import { usePostDetail } from "../../hooks/usePostDetail";
 import { usePagination } from "../../hooks/usePagination";
 import { CommentListTypes } from "../../types";
-import userEvent from "@testing-library/user-event";
-
-jest.useFakeTimers();
 
 jest.mock("react-router-dom", () => ({
 	...jest.requireActual("react-router-dom"),
@@ -77,7 +74,6 @@ const commentsArray = [
 	{
 		id: 1,
 		postId: 1,
-		name: "Comment 1",
 		body: "Comment 1 body",
 		user: {
 			id: 1,
@@ -87,11 +83,30 @@ const commentsArray = [
 	{
 		id: 2,
 		postId: 1,
-		name: "Comment 2",
 		body: "Comment 2 body",
 		user: {
 			id: 1,
 			username: "pepo",
+		},
+	},
+];
+const extraComments = [
+	{
+		id: 3,
+		postId: 1,
+		body: "Comment 3 body",
+		user: {
+			id: 1,
+			username: "pep",
+		},
+	},
+	{
+		id: 4,
+		postId: 1,
+		body: "Comment 4 body",
+		user: {
+			id: 1,
+			username: "carl",
 		},
 	},
 ];
@@ -103,12 +118,9 @@ const comments: CommentListTypes = {
 	limit: 0,
 };
 
-const COMMENT_STATUS_MESSAGE_DELAY = 1500;
+const exampleComment = "Example comment text.";
 
 describe("PostDetailPage", () => {
-	const mockOnAdd = jest.fn();
-	const exampleComment = "Example comment text.";
-
 	beforeEach(() => {
 		// Clear all instances and calls to constructor and all methods:
 		(useParams as jest.Mock).mockClear();
@@ -118,7 +130,7 @@ describe("PostDetailPage", () => {
 		(useCommentsByPostId as jest.Mock).mockClear();
 
 		(useParams as jest.Mock).mockReturnValue({ id: postId });
-		(usePagination as jest.Mock).mockResolvedValue([1, 1, "..."]);
+		(usePagination as jest.Mock).mockReturnValue([1, 2]);
 		(usePostDetail as jest.Mock).mockReturnValue({
 			postData: postDetail,
 			postLoading: false,
@@ -139,11 +151,10 @@ describe("PostDetailPage", () => {
 			error: null,
 		});
 		(addComment as jest.Mock).mockResolvedValue({
-			id: 3,
-			postId: 1,
-			name: "Comment 3",
-			email: "test3@gmail.com",
-			body: "Comment 3 body",
+			id: 341,
+			body: exampleComment,
+			postId: 2,
+			user: { id: 4, username: "yraigatt3" },
 		});
 
 		(useMutation as jest.Mock).mockReturnValue({
@@ -152,16 +163,45 @@ describe("PostDetailPage", () => {
 		});
 	});
 
-	it("renders post detail", async () => {
-        act(() => {
+	it("renders post page and its details", async () => {
+		act(() => {
 			render(<MockPostDetailPage />);
 		});
 		expect(await screen.findByText(postDetail.title)).toBeInTheDocument();
 		expect(screen.getByText(postDetail.body)).toBeInTheDocument();
 	});
 
-	it("renders comments", async () => {
-        act(() => {
+	it("shoulkd have appropriate accessibility attributes", async () => {
+		render(<MockPostDetailPage />);
+
+		const addCommentButton = screen.getByText("Add New");
+		fireEvent.click(addCommentButton);
+		const cancelButton = screen.getByText("Cancel");
+		const submitButton = screen.getByText("Submit");
+
+		expect(addCommentButton).toHaveAccessibleName("Add New");
+		expect(cancelButton).toHaveAccessibleName("Cancel");
+		expect(submitButton).toHaveAccessibleName("Submit");
+	});
+
+	it("should display an error message when post data fails to load", async () => {
+		const errorMessage = "Failed to fetch post data";
+		(usePostDetail as jest.Mock).mockReturnValue({
+			postData: null,
+			postLoading: false,
+			postError: errorMessage,
+			userData: null,
+			userLoading: false,
+			userError: null,
+		});
+
+		render(<MockPostDetailPage />);
+
+		expect(screen.getByText(errorMessage)).toBeInTheDocument();
+	});
+
+	it("renders post comments", async () => {
+		act(() => {
 			render(<MockPostDetailPage />);
 		});
 
@@ -170,56 +210,195 @@ describe("PostDetailPage", () => {
 		}
 	});
 
-	it("should close the modal after adding a comment", () => {
-		act(() => {
-			render(<MockPostDetailPage />);
+	it("should display a message when there are no comments available", async () => {
+		(useCommentsByPostId as jest.Mock).mockReturnValue({
+			data: { comments: [], total: 0, skip: 0, limit: 0 },
+			isLoading: false,
+			error: null,
 		});
+
+		render(<MockPostDetailPage />);
+
+		expect(
+			screen.getByText("There are no comments on this post."),
+		).toBeInTheDocument();
+	});
+
+	it("closes the modal when clicking the cancel button", async () => {
+		render(<MockPostDetailPage />);
 
 		fireEvent.click(screen.getByText("Add New"));
 
-		const textarea = screen.getByPlaceholderText("e.g. Hello world");
-		userEvent.type(textarea, exampleComment);
+		const cancelButton = screen.getByText("Cancel");
 
-		fireEvent.click(screen.getByText("Submit"));
+		fireEvent.click(cancelButton);
 
 		expect(screen.queryByText("Add a new comment")).not.toBeInTheDocument();
-        screen.debug();
 	});
 
-	// 	const textarea = screen.getByPlaceholderText("e.g. Hello world");
-	// 	userEvent.type(textarea, exampleComment);
+	it("should open modal and add a new comment", async () => {
+		jest.useFakeTimers();
+		render(<MockPostDetailPage />);
 
-	// 	fireEvent.click(screen.getByText("Submit"));
+		await waitFor(() => screen.getByText("Comments:"));
 
-	// 	// Wait for the status message to appear
-	// 	await waitFor(() =>
-	// 		expect(
-	// 			screen.getByText("Comment added successfully!"),
-	// 		).toBeInTheDocument(),
-	// 	);
+		act(() => {
+			fireEvent.click(screen.getByText("Add New"));
+		});
 
-	// 	// Fast forward the timer by the delay time
-	// 	jest.advanceTimersByTime(COMMENT_STATUS_MESSAGE_DELAY);
+		await waitFor(() => screen.getByText("Add a new comment"));
 
-	// 	// Expect the status message to have been removed
-	// 	expect(
-	// 		screen.queryByText("Comment added successfully!"),
-	// 	).not.toBeInTheDocument();
+		const textarea = screen.getByPlaceholderText("e.g. Hello world");
 
-	// 	// Try to add an empty comment and check for error message
-	// 	fireEvent.click(screen.getByText("Add New"));
-	// 	fireEvent.click(screen.getByText("Submit"));
+		act(() => {
+			fireEvent.change(textarea, {
+				target: { value: exampleComment },
+			});
+			fireEvent.click(screen.getByText("Submit"));
+		});
 
-	// 	await waitFor(() =>
-	// 		expect(
-	// 			screen.getByText("Comment cannot be empty"),
-	// 		).toBeInTheDocument(),
-	// 	);
+		await waitFor(() => screen.getByText(exampleComment));
 
-	// 	jest.advanceTimersByTime(COMMENT_STATUS_MESSAGE_DELAY);
+		expect(screen.getByText(exampleComment)).toBeInTheDocument();
 
-	// 	expect(
-	// 		screen.queryByText("Comment cannot be empty"),
-	// 	).not.toBeInTheDocument();
-	// });
+		// Wait for the status message to appear
+		await waitFor(() =>
+			expect(
+				screen.getByText("Comment added successfully!"),
+			).toBeInTheDocument(),
+		);
+
+		jest.runAllTimers(); // Run all pending timers
+
+		// Expect the status message to disappear
+		await waitFor(() =>
+			expect(
+				screen.queryByText("Comment added successfully!"),
+			).not.toBeInTheDocument(),
+		);
+
+		jest.useRealTimers(); // Restore real timers
+	});
+
+	it("should display an error message when adding an empty comment", async () => {
+		jest.useFakeTimers();
+		render(<MockPostDetailPage />);
+
+		await waitFor(() => screen.getByText("Comments:"));
+
+		act(() => {
+			fireEvent.click(screen.getByText("Add New"));
+		});
+
+		await waitFor(() => screen.getByText("Add a new comment"));
+
+		const textarea = screen.getByPlaceholderText("e.g. Hello world");
+
+		act(() => {
+			fireEvent.change(textarea, {
+				target: { value: "" },
+			});
+			fireEvent.click(screen.getByText("Submit"));
+		});
+
+		// Wait for the status message to appear
+		await waitFor(() =>
+			expect(
+				screen.getByText("Comment cannot be empty"),
+			).toBeInTheDocument(),
+		);
+
+		jest.runAllTimers(); // Run all pending timers
+
+		// Expect the status message to disappear
+		await waitFor(() =>
+			expect(
+				screen.queryByText("Comment cannot be empty"),
+			).not.toBeInTheDocument(),
+		);
+
+		jest.useRealTimers(); // Restore real timers
+	});
+
+	it("should display pagination when there are multiple pages of comments", async () => {
+		(useCommentsByPostId as jest.Mock).mockReturnValue({
+			data: {
+				...comments,
+				comments: [...comments.comments, ...extraComments],
+			},
+			isLoading: false,
+			error: null,
+		});
+		render(<MockPostDetailPage />);
+
+		await waitFor(() => screen.getByText("Comments:"));
+
+		expect(screen.getByText("1")).toBeInTheDocument();
+		expect(screen.getByText("2")).toBeInTheDocument();
+	});
+
+	it("should enable next page button and disable previous page button initially", async () => {
+		(useCommentsByPostId as jest.Mock).mockReturnValue({
+			data: {
+				...comments,
+				comments: [...comments.comments, ...extraComments],
+			},
+			isLoading: false,
+			error: null,
+		});
+		render(<MockPostDetailPage />);
+
+		await waitFor(() => screen.getByText("Comments:"));
+
+		const prevButton = screen.getByLabelText("previous page");
+		const nextButton = screen.getByLabelText("next page");
+
+		expect(prevButton).toHaveClass("is-disabled");
+		expect(nextButton).not.toHaveClass("is-disabled");
+	});
+
+	it("should disable next page button and enable previous page button after clicking next page", async () => {
+		(useCommentsByPostId as jest.Mock).mockReturnValue({
+			data: {
+				...comments,
+				comments: [...comments.comments, ...extraComments],
+			},
+			isLoading: false,
+			error: null,
+		});
+		render(<MockPostDetailPage />);
+
+		await waitFor(() => screen.getByText("Comments:"));
+
+		const prevButton = screen.getByLabelText("previous page");
+		const nextButton = screen.getByLabelText("next page");
+
+		fireEvent.click(nextButton);
+
+		expect(prevButton).not.toHaveClass("is-disabled");
+		expect(nextButton).toHaveClass("is-disabled");
+	});
+
+	it("should enable next page button and disable previous page button after clicking next page and then previous page", async () => {
+		(useCommentsByPostId as jest.Mock).mockReturnValue({
+			data: {
+				...comments,
+				comments: [...comments.comments, ...extraComments],
+			},
+			isLoading: false,
+			error: null,
+		});
+		render(<MockPostDetailPage />);
+
+		await waitFor(() => screen.getByText("Comments:"));
+
+		const prevButton = screen.getByLabelText("previous page");
+		const nextButton = screen.getByLabelText("next page");
+
+		fireEvent.click(nextButton);
+		fireEvent.click(prevButton);
+
+		expect(prevButton).toHaveClass("is-disabled");
+		expect(nextButton).not.toHaveClass("is-disabled");
+	});
 });

@@ -7,7 +7,10 @@ interface PostItemSkeletonProps {
 
 const PostItemSkeleton: React.FC<PostItemSkeletonProps> = ({ cards }) => {
 	return (
-		<div className="columns is-multiline">
+		<div
+			className="columns is-multiline"
+			data-testid="react-loading-skeleton"
+		>
 			{Array(cards)
 				.fill(0)
 				.map((_, i) => (

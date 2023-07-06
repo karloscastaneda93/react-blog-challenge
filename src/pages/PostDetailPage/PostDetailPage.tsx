@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
+
 import { useNavigate, useParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import Skeleton from "react-loading-skeleton";
@@ -20,8 +21,8 @@ const PAGE_SIZE = 3;
 const COMMENT_STATUS_MESSAGE_DELAY = 1500;
 
 const PostDetailPage: React.FC = () => {
-	const { id } = useParams<{ id: string }>();
 	const navigate = useNavigate();
+	const { id } = useParams<{ id: string }>();
 
 	const {
 		postData,
@@ -113,6 +114,7 @@ const PostDetailPage: React.FC = () => {
 							setTotalPages(newTotalPages);
 							return updatedComments;
 						});
+
 						setDisplayedComments((prevDisplayedComments) => {
 							const updatedDisplayedComments = [
 								newAddedComment,
@@ -130,6 +132,7 @@ const PostDetailPage: React.FC = () => {
 					};
 				}
 			}
+
 			setCommentStatusMessage(messageStatus);
 
 			//  hide the message after 1.5s

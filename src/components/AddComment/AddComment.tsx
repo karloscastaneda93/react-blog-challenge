@@ -1,7 +1,4 @@
 import React, { useState } from "react";
-import Modal from "react-modal";
-
-Modal.setAppElement("#root");
 
 interface AddCommentButtonProps {
 	onAdd: (comment: string) => void;
@@ -11,8 +8,14 @@ const AddComment: React.FC<AddCommentButtonProps> = ({ onAdd }) => {
 	const [modalIsOpen, setModalIsOpen] = useState(false);
 	const [comment, setComment] = useState("");
 
-	const openModal = () => setModalIsOpen(true);
-	const closeModal = () => setModalIsOpen(false);
+	const openModal = () => {
+		setModalIsOpen(true);
+	};
+
+	const closeModal = () => {
+		setModalIsOpen(false);
+		setComment("");
+	};
 
 	function sanitizeInput(str: string) {
 		return str.replace(/<\/?[^>]+(>|$)/g, "");
@@ -30,46 +33,52 @@ const AddComment: React.FC<AddCommentButtonProps> = ({ onAdd }) => {
 			<button className="button" onClick={openModal}>
 				Add New
 			</button>
-			<Modal
-				isOpen={modalIsOpen}
-				onRequestClose={closeModal}
-				contentLabel="Add Comment Modal"
-				className="Modal"
-			>
-				<p className="title is-3 has-text-centered">
-					Add a new comment
-				</p>
-				<article className="media">
-					<div className="media-content is-clipped">
-						<div className="field">
-							<p className="control">
-								<textarea
-									className="textarea mb-3"
-									placeholder="e.g. Hello world"
-									value={comment}
-									onChange={(e) => setComment(e.target.value)}
-								/>
+			{modalIsOpen && (
+				<div className="modal is-active">
+					<div className="modal-background" onClick={closeModal} />
+					<div className="modal-card">
+						<header className="modal-card-head">
+							<p className="modal-card-title">
+								Add a new comment
 							</p>
-						</div>
-						<div className="field buttons">
-							<p className="control">
-								<button
-									className="button is-danger"
-									onClick={closeModal}
-								>
-									Cancel
-								</button>
-								<button
-									className="button"
-									onClick={handleAddComment}
-								>
-									Submit
-								</button>
-							</p>
-						</div>
+							<button
+								className="delete"
+								aria-label="close"
+								onClick={closeModal}
+							/>
+						</header>
+						<section className="modal-card-body">
+							<div className="field">
+								<div className="control">
+									<textarea
+										className="textarea mb-3"
+										aria-describedby="Input for adding a comment"
+										placeholder="e.g. Hello world"
+										value={comment}
+										onChange={(e) =>
+											setComment(e.target.value)
+										}
+									/>
+								</div>
+							</div>
+						</section>
+						<footer className="modal-card-foot">
+							<button
+								className="button is-danger"
+								onClick={closeModal}
+							>
+								Cancel
+							</button>
+							<button
+								className="button"
+								onClick={handleAddComment}
+							>
+								Submit
+							</button>
+						</footer>
 					</div>
-				</article>
-			</Modal>
+				</div>
+			)}
 		</>
 	);
 };

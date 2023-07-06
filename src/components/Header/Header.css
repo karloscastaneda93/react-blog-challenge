@@ -11,7 +11,7 @@
     width: 100%;
 }
 
-header::after {
+header.header::after {
     content: "";
     position: absolute;
     top: 0;
@@ -23,13 +23,13 @@ header::after {
     transform-origin: bottom left;
 }
 
-header a {
+header.header a {
     color: white;
     cursor: pointer;
     margin-left: 5px;
 }
 
-header a:hover {
+header.header a:hover {
     color: white;
     text-decoration: underline;
 }

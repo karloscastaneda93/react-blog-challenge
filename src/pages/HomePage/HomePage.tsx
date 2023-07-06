@@ -1,6 +1,5 @@
 import React, { useState, useCallback, createContext } from "react";
 import { useParams } from "react-router-dom";
-
 import { usePosts } from "../../services/api";
 import PostList from "../../components/PostList";
 import Pagination from "../../components/Pagination";

@@ -42,6 +42,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
 				id="searchInput"
 				value={searchValue}
 				onChange={handleChange}
+				placeholder="Search posts..."
 				className={"search-input show-search-input"}
 			/>
 			<svg

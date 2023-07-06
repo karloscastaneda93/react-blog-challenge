@@ -1,6 +1,6 @@
 import React from "react";
 import { render, act } from "@testing-library/react";
-import Header from "../../../components/Header";
+import Header from "./Header";
 
 // Mock the useInView hook from react-intersection-observer
 jest.mock("react-intersection-observer", () => ({
