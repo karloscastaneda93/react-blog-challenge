@@ -1,19 +1,14 @@
 const puppeteer = require("puppeteer");
 const { expect } = require("chai");
 
-const pageLink =
-	process.env.DEPLOY_URL ||
-	"https://react-blog-challenge-e859f--pr1-develop-mpbvwktp.web.app/";
+const pageLink = "https://react-blog-challenge-e859f--pr1-develop-mpbvwktp.web.app/";
 
 describe("Home Page", function () {
 	let browser;
 	let page;
 
 	before(async function () {
-		browser = await puppeteer.launch({
-			headless: false,
-			slowMo: true,
-		});
+		browser = await puppeteer.launch();
 		page = await browser.newPage();
 		// Navigate to the home page
 		await page.goto(pageLink);
@@ -50,6 +45,6 @@ describe("Home Page", function () {
 			"h1.post-title",
 			(element) => element.textContent,
 		);
-		// expect(postTitle).to.not.be.empty
+		expect(postTitle).to.not.be.empty
 	});
 });
