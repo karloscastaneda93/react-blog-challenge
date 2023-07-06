@@ -23,12 +23,9 @@ jobs:
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_REACT_BLOG_CHALLENGE_E859F }}'
           projectId: react-blog-challenge-e859f
 
-      - name: Extract deploy URL
-        id: get-url
-        run: |
-          URL=$(echo '${{ github.event.comment.body }}' | grep -o 'https://[^ ]*')
-          echo "::set-output name=url::$URL"
+      - uses: kceb/pull-request-url-action@v1
+        id: pr-url
 
       - name: Run E2E tests
         run: |
-          DEPLOY_URL=${{ steps.get-url.outputs.url }} yarn test:e2e
+          DEPLOY_URL=${{ steps.pr-url.outputs.url }} yarn test:e2e
