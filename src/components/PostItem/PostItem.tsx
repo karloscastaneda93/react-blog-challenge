@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import slugify from "slugify";
 import Tag from "../Tag";
 import Icon from "../Icon";
 import { Post } from "../../types";
@@ -42,7 +43,9 @@ const PostItem: React.FC<PostItemProps> = ({
 							aria-label={`Read More About '${post.title}'`}
 							className="button is-outlined is-small is-fullwidth"
 							title="Read More About this post"
-							to={`/post/${post.id}`}
+							to={`/post/${slugify(post.title, {
+								lower: true,
+							})}/${post.id}`}
 						>
 							Read More...
 						</Link>

@@ -23,7 +23,10 @@ const Layout: React.FC = () => {
 			/>
 			<main className="main" role="main">
 				<Routes>
-					<Route path="/post/:id" element={<PostDetailPage />} />
+					<Route
+						path="/post/:slug/:id"
+						element={<PostDetailPage />}
+					/>
 					<Route index element={<HomePage />} />
 					<Route path="*" element={<NotFoundPage />} />
 				</Routes>
