@@ -23,7 +23,7 @@ const MetaTags: React.FC<MetaTagsProps> = ({
 	type = "website",
 }) => {
 	return (
-		<Helmet>
+		<Helmet prioritizeSeoTags>
 			<title>{title}</title>
 			<meta name="description" content={description} />
 			<meta property="og:title" content={title} />

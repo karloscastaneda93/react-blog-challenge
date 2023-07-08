@@ -1,4 +1,5 @@
 import { Post, User } from "../types";
+import { META_DETAILS, HEADER_DETAILS } from "../constants";
 
 // Utility function to store data in localStorage
 export const storeInLocalStorage = <T>(key: string, data: T): void => {
@@ -37,15 +38,40 @@ export const getPostSchema = (postData: Post, userData: User): object => {
 		},
 		publisher: {
 			"@type": "Organization",
-			name: "A blog site.",
+			name: HEADER_DETAILS.title,
 			logo: {
 				"@type": "ImageObject",
-				url: "https://via.placeholder.com/300",
+				url: META_DETAILS.defaultImageUrl,
 			},
 		},
 		description: postData?.body,
 		image: "https://via.placeholder.com/800x400",
 		datePublished: new Date().toISOString(),
+	};
+
+	return schema;
+};
+
+export const getHomeSchema = (): object => {
+	const schema = {
+		"@context": "https://schema.org",
+		"@type": "WebSite",
+		name: META_DETAILS.defaultTitle,
+		description: META_DETAILS.defaultDescription,
+		image: META_DETAILS.defaultImageUrl,
+		url: new URL(META_DETAILS.defaultUrl),
+		publisher: {
+			"@type": "Organization",
+			name: HEADER_DETAILS.title,
+			logo: {
+				"@type": "ImageObject",
+				url: META_DETAILS.defaultImageUrl,
+			},
+		},
+		mainEntityOfPage: {
+			"@type": "WebPage",
+			"@id": META_DETAILS.defaultUrl,
+		},
 	};
 
 	return schema;
