@@ -10,13 +10,8 @@
 		],
 		"headers": [
 			{
-				"source": "**/*.html",
-				"headers": [
-					{
-						"key": "X-Robots-Tag",
-						"value": "index"
-					}
-				]
+				"key": "X-Robots-Tag",
+				"value": "index"
 			}
 		]
 	}
