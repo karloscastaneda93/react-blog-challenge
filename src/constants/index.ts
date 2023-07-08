@@ -1,3 +1,4 @@
+export const API_BASE_URL = "https://dummyjson.com";
 export const POSTS_NUMBER = 12;
 
 export const HEADER_DETAILS = {

@@ -2,9 +2,7 @@ import axios from "axios";
 import { useQuery } from "react-query";
 
 import { Post, PostListTypes, User, CommentListTypes } from "../types";
-import { POSTS_NUMBER } from "../constants";
-
-const API_BASE_URL = "https://dummyjson.com";
+import { API_BASE_URL, POSTS_NUMBER } from "../constants";
 
 const staleTime = 1000 * 60; // 1 minute
 
