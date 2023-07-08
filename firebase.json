@@ -11,7 +11,7 @@
 			]
 		},
 		{
-		  "target": "react-challenge-sitemap",
+		  "target": "sitemap",
 		  "public": "sitemap",
 		  "ignore": ["firebase.json", "**/.*", "**/node_modules/**"]
 		}
