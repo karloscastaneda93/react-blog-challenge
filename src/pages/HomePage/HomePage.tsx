@@ -8,6 +8,8 @@ import PostItemSkeleton from "../../components/PostItemSkeleton";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import MetaTags from "../../components/MetaTags/MetaTags";
 import { POSTS_NUMBER, META_DETAILS } from "../../constants";
+import SchemaMarkup from "../../components/SchemaMarkup";
+import { getHomeSchema, getHomeItemsSchema } from "../../utils";
 
 interface HomeContextType {
 	searchValue: string;
@@ -45,6 +47,7 @@ const HomePage: React.FC = () => {
 				url={window.location.href}
 				imageUrl={META_DETAILS.defaultImageUrl}
 			/>
+			<SchemaMarkup schema={getHomeSchema()} />
 			<section className="section">
 				<SearchBar onSearch={handleSearch} />
 				<div className="container">
@@ -56,6 +59,9 @@ const HomePage: React.FC = () => {
 						<>
 							{data && data.posts.length ? (
 								<>
+									<SchemaMarkup
+										schema={getHomeItemsSchema(data.posts)}
+									/>
 									<PostList posts={data.posts} />
 									<Pagination
 										currentPage={currentPage}
