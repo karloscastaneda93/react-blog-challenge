@@ -8,7 +8,6 @@ interface MetaTagsProps {
 	description?: string;
 	url?: string;
 	imageUrl?: string;
-	twitterUsername?: string; // Optional Twitter username
 	siteName?: string; // Optional site name
 	locale?: string; // Optional locale, defaults to "en_US"
 	type?: string; // Optional type, defaults to "website"
@@ -19,7 +18,6 @@ const MetaTags: React.FC<MetaTagsProps> = ({
 	description = META_DETAILS.defaultDescription,
 	url = META_DETAILS.defaultUrl,
 	imageUrl = META_DETAILS.defaultImageUrl,
-	twitterUsername = "@yourTwitterHandle",
 	siteName = META_DETAILS.defaultTitle,
 	locale = "en_US",
 	type = "website",
@@ -39,8 +37,6 @@ const MetaTags: React.FC<MetaTagsProps> = ({
 			<meta name="twitter:title" content={title} />
 			<meta name="twitter:description" content={description} />
 			<meta name="twitter:image" content={imageUrl} />
-			<meta name="twitter:site" content={twitterUsername} />
-			<meta name="twitter:creator" content={twitterUsername} />
 		</Helmet>
 	);
 };
