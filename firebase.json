@@ -1,7 +1,6 @@
 {
 	"hosting": [
 		{
-			"target": "default",
 			"public": "build",
 			"ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
 			"rewrites": [
@@ -10,11 +9,6 @@
 					"destination": "/index.html"
 				}
 			]
-		},
-		{
-			"target": "sitemap",
-			"public": "sitemap",
-			"ignore": ["firebase.json", "**/.*", "**/node_modules/**"]
 		}
 	]
 }

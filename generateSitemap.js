@@ -34,11 +34,6 @@ fetch(`${API_BASE_URL}/posts?limit=150`)
       </urlset>
     `;
 
-		// Check if the directory exists, if not, create it
-		if (!fs.existsSync("sitemap")) {
-			fs.mkdirSync("sitemap");
-		}
-
 		// Write the sitemap to a file
-		fs.writeFileSync("sitemap/sitemap.xml", sitemap);
+		fs.writeFileSync("build/static/sitemap.xml", sitemap);
 	});
