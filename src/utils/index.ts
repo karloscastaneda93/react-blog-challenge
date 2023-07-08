@@ -1,3 +1,5 @@
+import { Post, User } from "../types";
+
 // Utility function to store data in localStorage
 export const storeInLocalStorage = <T>(key: string, data: T): void => {
 	try {
@@ -22,4 +24,29 @@ export const getFromLocalStorage = (key: string) => {
 		);
 		return null;
 	}
+};
+
+export const getPostSchema = (postData: Post, userData: User): object => {
+	const schema = {
+		"@context": "https://schema.org",
+		"@type": "BlogPosting",
+		headline: postData?.title,
+		author: {
+			"@type": "Person",
+			name: `${userData?.firstName} ${userData?.lastName}`,
+		},
+		publisher: {
+			"@type": "Organization",
+			name: "A blog site.",
+			logo: {
+				"@type": "ImageObject",
+				url: "https://via.placeholder.com/300",
+			},
+		},
+		description: postData?.body,
+		image: "https://via.placeholder.com/800x400",
+		datePublished: new Date().toISOString(),
+	};
+
+	return schema;
 };
