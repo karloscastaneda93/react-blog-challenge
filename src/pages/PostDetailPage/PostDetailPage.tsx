@@ -19,6 +19,7 @@ import {
 	getPostSchema,
 } from "../../utils";
 import { usePostDetail } from "../../hooks/usePostDetail";
+import { META_DETAILS } from "../../constants";
 
 import "./PostDetailPage.css";
 
@@ -159,13 +160,15 @@ const PostDetailPage: React.FC = () => {
 
 	return (
 		<>
-			<MetaTags
-				title={postData?.title || "Loading..."}
-				description={postData?.body || "Loading..."}
-				url={`${window.location.origin}/post/${id}`}
-			/>
 			{postData && userData && (
-				<SchemaMarkup schema={getPostSchema(postData, userData)} />
+				<>
+					<MetaTags
+						title={`${META_DETAILS.defaultTitle} - ${postData?.title}`}
+						description={postData?.body}
+						url={`${window.location.origin}/post/${id}`}
+					/>
+					<SchemaMarkup schema={getPostSchema(postData, userData)} />
+				</>
 			)}
 
 			<section className="section">

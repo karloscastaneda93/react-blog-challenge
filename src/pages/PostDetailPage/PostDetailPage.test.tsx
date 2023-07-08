@@ -15,6 +15,7 @@ import { useCommentsByPostId, addComment } from "../../services/api";
 import { usePostDetail } from "../../hooks/usePostDetail";
 import { usePagination } from "../../hooks/usePagination";
 import { CommentListTypes } from "../../types";
+import { META_DETAILS } from "../../constants";
 
 jest.mock("react-router-dom", () => ({
 	...jest.requireActual("react-router-dom"),
@@ -167,11 +168,14 @@ describe("PostDetailPage", () => {
 		act(() => {
 			render(<MockPostDetailPage />);
 		});
-		expect(await screen.findByText(postDetail.title)).toBeInTheDocument();
+		const postTitle = `${META_DETAILS.defaultTitle} - ${postDetail.title}`;
+		expect(
+			await screen.findByText(postTitle),
+		).toBeInTheDocument();
 		expect(screen.getByText(postDetail.body)).toBeInTheDocument();
 	});
 
-	it("shoulkd have appropriate accessibility attributes", async () => {
+	it("should have appropriate accessibility attributes", async () => {
 		render(<MockPostDetailPage />);
 
 		const addCommentButton = screen.getByText("Add New");
