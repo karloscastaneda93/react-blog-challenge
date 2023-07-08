@@ -4,7 +4,7 @@ import Title from "./Title";
 
 describe("Title", () => {
 	it("renders the title text", () => {
-		render(<Title />);
+		render(<Title text="A blog site" />);
 		const titleElement = screen.getByText(/A blog site/i);
 		expect(titleElement).toBeInTheDocument();
 	});

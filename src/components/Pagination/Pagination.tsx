@@ -52,9 +52,13 @@ const Pagination: React.FC<PaginationProps> = ({
 	const getPageLink = (pageNumber: number | string) => {
 		if (!isHomePage) return "#";
 
-		const url = pageNumber !== 1 ? `/${pageNumber}` : "/";
+		const url = "/";
 
 		const params = new URLSearchParams();
+
+		if (pageNumber !== 1) {
+			params.append("p", pageNumber.toString());
+		}
 
 		if (homeContext?.searchValue?.length) {
 			params.append("q", homeContext.searchValue);

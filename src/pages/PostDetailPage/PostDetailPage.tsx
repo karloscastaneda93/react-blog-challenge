@@ -1,21 +1,27 @@
 import React, { useState, useEffect, useCallback } from "react";
 
 import { useNavigate, useParams } from "react-router-dom";
-import { Helmet } from "react-helmet-async";
 import Skeleton from "react-loading-skeleton";
 
-import { Comment as CommentType } from "../../types/Comment";
-import { addComment, useCommentsByPostId } from "../../services/api";
-import { storeInLocalStorage, getFromLocalStorage } from "../../utils";
 import Error from "../../components/Error";
 import AddComment from "../../components/AddComment";
 import Comment from "../../components/Comment";
 import Pagination from "../../components/Pagination";
+import SchemaMarkup from "../../components/SchemaMarkup/SchemaMarkup";
+import GoHomeButton from "../../components/GoHomeButton/GoHomeButton";
+import MetaTags from "../../components/MetaTags";
 
+import { Comment as CommentType } from "../../types/Comment";
+import { addComment, useCommentsByPostId } from "../../services/api";
+import {
+	storeInLocalStorage,
+	getFromLocalStorage,
+	getPostSchema,
+} from "../../utils";
 import { usePostDetail } from "../../hooks/usePostDetail";
+import { META_DETAILS } from "../../constants";
 
 import "./PostDetailPage.css";
-import { Link } from "react-router-dom";
 
 const PAGE_SIZE = 3;
 const COMMENT_STATUS_MESSAGE_DELAY = 1500;
@@ -122,6 +128,7 @@ const PostDetailPage: React.FC = () => {
 							];
 							return updatedDisplayedComments.slice(0, PAGE_SIZE);
 						});
+						setCurrentPage(1);
 					}
 				} catch (error) {
 					console.error("Error while adding comment", error);
@@ -148,36 +155,23 @@ const PostDetailPage: React.FC = () => {
 			<Comment key={index} comment={comment} />
 		));
 
-	const schema = {
-		"@context": "https://schema.org",
-		"@type": "BlogPosting",
-		headline: postData?.title,
-		author: {
-			"@type": "Person",
-			name: userData?.firstName,
-		},
-		publisher: {
-			"@type": "Organization",
-			name: "A blog site.",
-			logo: {
-				"@type": "ImageObject",
-				url: "https://www.example.com/path-to-your-logo.jpg",
-			},
-		},
-		description: postData?.body,
-	};
-
 	const handlePageChange = (page: number) => {
 		setCurrentPage(page);
 	};
 
 	return (
 		<>
-			<Helmet>
-				<script type="application/ld+json">
-					{JSON.stringify(schema)}
-				</script>
-			</Helmet>
+			{postData && userData && (
+				<>
+					<MetaTags
+						title={`${META_DETAILS.defaultTitle} - ${postData?.title}`}
+						description={postData?.body}
+						url={`${window.location.origin}/post/${id}`}
+					/>
+					<SchemaMarkup schema={getPostSchema(postData, userData)} />
+				</>
+			)}
+
 			<section className="section">
 				{commentStatusMessage.message.length > 0 && (
 					<div
@@ -209,26 +203,7 @@ const PostDetailPage: React.FC = () => {
 							/>
 						</svg>
 					</button>
-					<Link
-						className="button"
-						to={"/"}
-						title="Go to back Home Page"
-					>
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							fill="none"
-							viewBox="0 0 24 24"
-							strokeWidth="1.5"
-							stroke="currentColor"
-							className="icon is-medium"
-						>
-							<path
-								strokeLinecap="round"
-								strokeLinejoin="round"
-								d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"
-							/>
-						</svg>
-					</Link>
+					<GoHomeButton />
 				</div>
 				<article className="container">
 					{userError || postError ? (
@@ -238,13 +213,13 @@ const PostDetailPage: React.FC = () => {
 						</>
 					) : (
 						<>
-							<h1 className="title post-title">
+							<h2 className="title post-title">
 								{!postLoading ? (
 									postData?.title
 								) : (
 									<Skeleton width={540} />
 								)}
-							</h1>
+							</h2>
 							<div className="mb-3">
 								{!userLoading && userData ? (
 									`Author: ${userData.firstName} ${userData.lastName}`
@@ -277,7 +252,9 @@ const PostDetailPage: React.FC = () => {
 									</>
 								) : (
 									<div className="notification has-text-centered">
-										There are no comments on this post.
+										{commentsData
+											? "There are no comments on this post."
+											: "Loading comments..."}
 									</div>
 								)
 							) : (

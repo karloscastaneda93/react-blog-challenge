@@ -2,8 +2,7 @@ import axios from "axios";
 import { useQuery } from "react-query";
 
 import { Post, PostListTypes, User, CommentListTypes } from "../types";
-
-const API_BASE_URL = "https://dummyjson.com";
+import { API_BASE_URL, POSTS_NUMBER } from "../constants";
 
 const staleTime = 1000 * 60; // 1 minute
 
@@ -41,14 +40,13 @@ async function fetchPosts(
 	page: number,
 	searchValue: string,
 ): Promise<PostListTypes> {
-	const limit = 14; // Number of items per page
-	const skip = page > 1 ? (page - 1) * limit : 0;
-	let url = `${API_BASE_URL}/posts?limit=${limit}&skip=${skip}`;
+	const skip = page > 1 ? (page - 1) * POSTS_NUMBER : 0;
+	let url = `${API_BASE_URL}/posts?limit=${POSTS_NUMBER}&skip=${skip}`;
 
 	if (searchValue) {
 		url = `${API_BASE_URL}/posts/search?q=${encodeURIComponent(
 			searchValue,
-		)}&limit=${limit}&skip=${skip}`;
+		)}&limit=${POSTS_NUMBER}&skip=${skip}`;
 	}
 
 	const response = await axios.get(url);

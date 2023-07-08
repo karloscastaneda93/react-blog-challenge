@@ -2,9 +2,22 @@ import React, { FC, useEffect } from "react";
 import Title from "../Title";
 import { useInView } from "react-intersection-observer";
 import "./Header.css";
+import Author from "../Author";
 
-const Header: FC<{ setInView: (inView: boolean) => void }> = ({
+interface HeaderProps {
+	setInView: (inView: boolean) => void;
+	title: string;
+	author: string;
+	authorUrl: string;
+	authorLabel: string;
+}
+
+const Header: FC<HeaderProps> = ({
 	setInView,
+	title,
+	author,
+	authorUrl,
+	authorLabel,
 }) => {
 	const [ref, inView] = useInView();
 
@@ -15,22 +28,10 @@ const Header: FC<{ setInView: (inView: boolean) => void }> = ({
 	return (
 		<header ref={ref} className="header">
 			<div className="header-details has-text-centered mt-5">
-				<Title />
-				<p className="author">
-					by
-					<a
-						target="_blank"
-						rel="noreferrer"
-						className="is-size-4"
-						href="https://ccastaneda.dev"
-						aria-label="Carlos Castañeda - Developer Portfolio (opens in a new tab)"
-					>
-						Carlos Castañeda
-					</a>
-				</p>
+				<Title text={title} />
+				<Author name={author} url={authorUrl} label={authorLabel} />
 			</div>
 		</header>
 	);
 };
-
 export default Header;

@@ -8,6 +8,12 @@ import { PostListTypes } from "../../types";
 
 jest.mock("../../services/api");
 
+jest.mock("react-helmet-async", () => ({
+	Helmet: ({ children }: { children: React.ReactNode }) => (
+		<div data-testid="mock-helmet">{children}</div>
+	),
+}));
+
 // Initialize queryClient
 const queryClient = new QueryClient();
 

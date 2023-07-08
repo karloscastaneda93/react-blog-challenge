@@ -39,6 +39,7 @@ const PostItem: React.FC<PostItemProps> = ({
 					</div>
 					<div className="card-footer">
 						<Link
+							aria-label={`Read More About '${post.title}'`}
 							className="button is-outlined is-small is-fullwidth"
 							title="Read More About this post"
 							to={`/post/${post.id}`}

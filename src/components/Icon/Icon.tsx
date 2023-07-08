@@ -9,6 +9,7 @@ const Icon = () => (
 		stroke="currentColor"
 		className="icon is-medium"
 	>
+		<title>Number of Reactions Icon</title>
 		<path
 			strokeLinecap="round"
 			strokeLinejoin="round"
