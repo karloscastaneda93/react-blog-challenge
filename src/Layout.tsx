@@ -21,7 +21,7 @@ const Layout: React.FC = () => {
 				authorUrl={HEADER_DETAILS.authorUrl}
 				authorLabel={HEADER_DETAILS.authorLabel}
 			/>
-			<main className="main">
+			<main className="main" role="main">
 				<Routes>
 					<Route path="/post/:id" element={<PostDetailPage />} />
 					<Route index element={<HomePage />} />

@@ -33,7 +33,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
 	};
 
 	return (
-		<div className={"search is-flex is-align-items-center"}>
+		<div className={"search is-flex is-align-items-center"} role="search">
 			<label htmlFor="searchInput" className="visually-hidden">
 				Search:
 			</label>

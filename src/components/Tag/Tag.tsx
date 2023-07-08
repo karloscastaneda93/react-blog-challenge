@@ -9,6 +9,7 @@ interface TagProps {
 const Tag: React.FC<TagProps> = ({ tag, onClick, isSelected }) => {
 	return (
 		<button
+			aria-label={`Tag: ${tag}`}
 			className={`tag button is-clickable ${
 				isSelected ? "" : "has-background-grey-lighter"
 			}`}
