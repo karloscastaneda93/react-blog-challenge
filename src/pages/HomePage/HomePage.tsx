@@ -1,11 +1,12 @@
 import React, { useState, useCallback, createContext } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { usePosts } from "../../services/api";
 import PostList from "../../components/PostList";
 import Pagination from "../../components/Pagination";
 import Error from "../../components/Error";
 import PostItemSkeleton from "../../components/PostItemSkeleton";
 import SearchBar from "../../components/SearchBar/SearchBar";
+import { POSTS_NUMBER } from "../../constants";
 
 interface HomeContextType {
 	searchValue: string;
@@ -16,14 +17,16 @@ interface HomeContextType {
 export const HomeContext = createContext<HomeContextType | undefined>(
 	undefined,
 );
-const POSTS_NUMBER = 14;
 
 const HomePage: React.FC = () => {
 	const [searchValue, setSearchValue] = useState<string>("");
 	const [filter, setFilter] = useState("");
 
-	const { page } = useParams<{ page: string }>();
-	const currentPage = page ? parseInt(page) : 1;
+	const location = useLocation(); // Get the current location
+	const params = new URLSearchParams(location.search);
+	const currentPage = params.get("p")
+		? parseInt(params.get("p") as string)
+		: 1;
 
 	const { data, isLoading, error } = usePosts(currentPage, searchValue);
 

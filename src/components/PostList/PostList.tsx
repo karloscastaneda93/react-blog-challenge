@@ -9,19 +9,27 @@ import "./PostList.css";
 
 const PostList: React.FC<{ posts: Post[] }> = ({ posts }) => {
 	const homeContext = useContext(HomeContext);
-	const [searchParams] = useSearchParams();
+	const [searchParams, setSearchParams] = useSearchParams();
 	const [selectedTag, setSelectedTag] = useState(
 		homeContext?.filter || searchParams.get("filter") || "",
 	);
 
 	const handleTagClick = useCallback((tag: string) => {
+		const params = new URLSearchParams(searchParams.toString());
 		setSelectedTag(tag);
 		homeContext?.setFilter(tag);
+		if (!params.has("filter")) {
+			params.append("filter", tag);
+			setSearchParams(params, { replace: true });
+		}
 	}, []);
 
 	const handleCloseClick = () => {
+		const params = new URLSearchParams(searchParams.toString());
 		setSelectedTag("");
 		homeContext?.setFilter("");
+		params.delete("filter");
+		setSearchParams(params, { replace: true });
 	};
 
 	const filteredPosts = useMemo(() => {
