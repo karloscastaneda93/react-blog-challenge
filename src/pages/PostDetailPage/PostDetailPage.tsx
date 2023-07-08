@@ -128,6 +128,7 @@ const PostDetailPage: React.FC = () => {
 							];
 							return updatedDisplayedComments.slice(0, PAGE_SIZE);
 						});
+						setCurrentPage(1);
 					}
 				} catch (error) {
 					console.error("Error while adding comment", error);
