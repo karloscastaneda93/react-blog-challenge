@@ -9,7 +9,7 @@ import SearchBar from "../../components/SearchBar/SearchBar";
 import MetaTags from "../../components/MetaTags/MetaTags";
 import { POSTS_NUMBER, META_DETAILS } from "../../constants";
 import SchemaMarkup from "../../components/SchemaMarkup";
-import { getHomeSchema } from "../../utils";
+import { getHomeSchema, getHomeItemsSchema } from "../../utils";
 
 interface HomeContextType {
 	searchValue: string;
@@ -59,6 +59,9 @@ const HomePage: React.FC = () => {
 						<>
 							{data && data.posts.length ? (
 								<>
+									<SchemaMarkup
+										schema={getHomeItemsSchema(data.posts)}
+									/>
 									<PostList posts={data.posts} />
 									<Pagination
 										currentPage={currentPage}
