@@ -35,5 +35,5 @@ fetch(`${API_BASE_URL}/posts?limit=150`)
     `;
 
 		// Write the sitemap to a file
-		fs.writeFileSync("public/sitemap.xml", sitemap);
+		fs.writeFileSync("build/static/sitemap.xml", sitemap);
 	});
