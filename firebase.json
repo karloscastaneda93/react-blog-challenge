@@ -1,17 +1,20 @@
 {
-	"hosting": {
-	  "public": "build",
-	  "ignore": [
-		"firebase.json",
-		"**/.*",
-		"**/node_modules/**"
-	  ],
-	  "rewrites": [
+	"hosting": [
 		{
-		  "source": "**",
-		  "destination": "/index.html"
+			"target": "react-blog-challenge-e859f",
+			"public": "build",
+			"ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+			"rewrites": [
+				{
+					"source": "**",
+					"destination": "/index.html"
+				}
+			]
+		},
+		{
+		  "target": "react-challenge-sitemap",
+		  "public": "sitemap",
+		  "ignore": ["firebase.json", "**/.*", "**/node_modules/**"]
 		}
-	  ]
-	}
-  }
-  
+	]
+}
