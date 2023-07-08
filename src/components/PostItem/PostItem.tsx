@@ -45,6 +45,7 @@ const PostItem: React.FC<PostItemProps> = ({
 							title="Read More About this post"
 							to={`/post/${slugify(post.title, {
 								lower: true,
+								strict: true,
 							})}/${post.id}`}
 						>
 							Read More...
