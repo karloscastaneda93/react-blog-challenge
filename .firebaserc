@@ -1,6 +1,5 @@
 {
-	"projects": {
-		"default": "react-blog-challenge-e859f",
-		"sitemap": "react-challenge-sitemap"
-	}
+  "projects": {
+    "default": "react-blog-challenge-e859f"
+  }
 }
