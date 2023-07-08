@@ -6,7 +6,8 @@ import Pagination from "../../components/Pagination";
 import Error from "../../components/Error";
 import PostItemSkeleton from "../../components/PostItemSkeleton";
 import SearchBar from "../../components/SearchBar/SearchBar";
-import { POSTS_NUMBER } from "../../constants";
+import MetaTags from "../../components/MetaTags/MetaTags";
+import { POSTS_NUMBER, META_DETAILS } from "../../constants";
 
 interface HomeContextType {
 	searchValue: string;
@@ -38,6 +39,12 @@ const HomePage: React.FC = () => {
 
 	return (
 		<HomeContext.Provider value={{ searchValue, filter, setFilter }}>
+			<MetaTags
+				title={META_DETAILS.defaultTitle}
+				description={META_DETAILS.defaultDescription}
+				url={window.location.href}
+				imageUrl={META_DETAILS.defaultImageUrl}
+			/>
 			<section className="section">
 				<SearchBar onSearch={handleSearch} />
 				<div className="container">

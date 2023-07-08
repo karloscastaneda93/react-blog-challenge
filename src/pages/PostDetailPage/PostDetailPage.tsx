@@ -9,6 +9,7 @@ import Comment from "../../components/Comment";
 import Pagination from "../../components/Pagination";
 import SchemaMarkup from "../../components/SchemaMarkup/SchemaMarkup";
 import GoHomeButton from "../../components/GoHomeButton/GoHomeButton";
+import MetaTags from "../../components/MetaTags";
 
 import { Comment as CommentType } from "../../types/Comment";
 import { addComment, useCommentsByPostId } from "../../services/api";
@@ -158,6 +159,11 @@ const PostDetailPage: React.FC = () => {
 
 	return (
 		<>
+			<MetaTags
+				title={postData?.title || "Loading..."}
+				description={postData?.body || "Loading..."}
+				url={`${window.location.origin}/post/${id}`}
+			/>
 			{postData && userData && (
 				<SchemaMarkup schema={getPostSchema(postData, userData)} />
 			)}
