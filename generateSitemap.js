@@ -23,8 +23,7 @@ fetch(`${API_BASE_URL}/posts?limit=150`)
 		}));
 
 		// Create the sitemap
-		const sitemap = `
-			<?xml version="1.0" encoding="utf-8"?>
+		const sitemap = `<?xml version="1.0" encoding="utf-8"?>
 			<urlset xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 				<url>
 					<loc>${SITE_URL}/</loc>
