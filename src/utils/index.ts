@@ -116,3 +116,7 @@ export const getHomeItemsSchema = (posts: Post[]): object => {
 
 	return schema;
 };
+
+export const sanitizeInput = (str: string) => {
+	return str.replace(/<\/?[^>]+(>|$)/g, "");
+};

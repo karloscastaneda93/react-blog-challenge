@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import Modal from "../Modal";
+
+import { sanitizeInput } from "../../utils";
 
 interface AddCommentButtonProps {
 	onAdd: (comment: string) => void;
@@ -17,10 +20,6 @@ const AddComment: React.FC<AddCommentButtonProps> = ({ onAdd }) => {
 		setComment("");
 	};
 
-	function sanitizeInput(str: string) {
-		return str.replace(/<\/?[^>]+(>|$)/g, "");
-	}
-
 	const handleAddComment = () => {
 		const sanitizedComment = sanitizeInput(comment);
 		onAdd(sanitizedComment);
@@ -33,7 +32,7 @@ const AddComment: React.FC<AddCommentButtonProps> = ({ onAdd }) => {
 			<button className="button" onClick={openModal}>
 				Add New
 			</button>
-			{modalIsOpen && (
+			<Modal isOpen={modalIsOpen} onClose={closeModal}>
 				<div className="modal is-active">
 					<div className="modal-background" onClick={closeModal} />
 					<div className="modal-card">
@@ -78,7 +77,7 @@ const AddComment: React.FC<AddCommentButtonProps> = ({ onAdd }) => {
 						</footer>
 					</div>
 				</div>
-			)}
+			</Modal>
 		</>
 	);
 };
